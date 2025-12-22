@@ -16,11 +16,15 @@ RUN pip install --upgrade pip && \
 # Copy project
 COPY . /app/
 
+# Copy and set permissions for entrypoint script
+COPY entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
+# Use entrypoint script
+ENTRYPOINT ["/app/entrypoint.sh"]
