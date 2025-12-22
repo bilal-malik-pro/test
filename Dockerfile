@@ -22,5 +22,5 @@ RUN python manage.py collectstatic --noinput
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
+# Run gunicorn with PORT environment variable (defaults to 8000)
+CMD gunicorn --bind 0.0.0.0:${PORT:-8000} myproject.wsgi:application
